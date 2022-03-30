@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const {
-  getUsers, changeUser, getUser,
+  getUsers, changeUser, getUser, newLogin
 } = require('../controllers/users');
 
 router.get('/', getUsers);
@@ -12,5 +12,7 @@ router.patch('/me', celebrate({
     name: Joi.string().required().min(2),
   }).unknown(true),
 }), changeUser);
+
+router.put('/me', newLogin)
 
 module.exports = router;

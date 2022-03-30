@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema({
     minlength: 8,
     select: false,
   },
+  login: {
+    type: Number,
+    default: 0,
+  }
 });
 
 userSchema.statics.findUserByCredentials = function encryptPassword(email, password) {

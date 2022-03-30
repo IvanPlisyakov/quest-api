@@ -12,8 +12,10 @@ const login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
+      User.findOneAndUpdate({ email: user.email, login: user.login + 1})
+        .then((a) => console.log(a))
+        .catch((a) => console.log(a))
       const token = jwt.sign({ _id: user._id }, 'dev-secret', { expiresIn: '7d' });// process.env.NODE_ENV === 'production' ? process.env.JWT_SECRET : 'dev-secret'
-
       res.send({ token });
     })
     .catch(next);
@@ -45,6 +47,15 @@ const createUsers = (req, res, next) => {
     })
     .catch(next);
 };
+
+const newLogin = (req, res, next) => {
+  User.findById(req.user._id)
+    .then((user) => {
+      User.findByIdAndUpdate(req.user._id, {login: user.login + 1}, { new: true, runValidators: true },)
+        .then((user) => {res.status(200).send(user)})
+        .catch((a) => next)
+    })
+}
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -83,5 +94,5 @@ const changeUser = (req, res, next) => {
 };
 
 module.exports = {
-  createUsers, login, getUsers, getUser, changeUser,
+  createUsers, login, getUsers, getUser, changeUser, newLogin
 };

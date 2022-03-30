@@ -7,6 +7,10 @@ const answersConstants = [
   "32738",
 ];
 
+const textConstants = [
+
+]
+
 module.exports = {
   answersConstants
 };
